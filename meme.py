@@ -133,7 +133,7 @@ class sonMeme:
     pic = a[x]
     son = Image.open(pic)
     if son.size > (1024, 768):
-      son = son.resize((1024, 768))
+      son = son.resize((800, 600))
     center(self.__sonWindow, son)
     sonPhoto = ImageTk.PhotoImage(son)
     self.__sonMeme = Button(self.__sonWindow, image=sonPhoto,
@@ -193,7 +193,7 @@ class saltMeme:
     pic = a[x]
     salt = Image.open(pic)
     if salt.size > (1024, 768):
-      salt = salt.resize((1024, 768))
+      salt = salt.resize((800, 600))
     center(self.__saltWindow, salt)
     saltPhoto = ImageTk.PhotoImage(salt)
     self.__saltMeme = Button(self.__saltWindow, image=saltPhoto,
@@ -222,7 +222,7 @@ class arthurMeme:
     pic = a[x]
     arthur = Image.open(pic)
     if arthur.size > (1024, 768):
-      arthur = arthur.resize((1024, 768))
+      arthur = arthur.resize((800, 600))
     center(self.__arthurWindow, arthur)
     arthurPhoto = ImageTk.PhotoImage(arthur)
     self.__arthurMeme = Button(self.__arthurWindow, image=arthurPhoto,
@@ -251,7 +251,7 @@ class bingMeme:
     pic = a[x]
     bing = Image.open(pic)
     if (bing.size > (1080, 780)):
-      bing = bing.resize((1024, 768))
+      bing = bing.resize((800, 600))
 
     center(self.__bingWindow, bing)
     bingPhoto = ImageTk.PhotoImage(bing)
@@ -281,7 +281,7 @@ class rollMeme:
     pic = a[x]
     roll = Image.open(pic)
     if roll.size > (1024, 768):
-      roll = roll.resize((1024, 768))
+      roll = roll.resize((800, 600))
     center(self.__rollWindow, roll)
     rollPhoto = ImageTk.PhotoImage(roll)
     self.__rollMeme = Button(self.__rollWindow, image=rollPhoto,
@@ -310,7 +310,7 @@ class doorMeme:
     pic = a[x]
     door = Image.open(pic)
     if door.size > (1024, 768):
-      door = door.resize((1024, 768))
+      door = door.resize((800,600))
     center(self.__doorWindow, door)
     doorPhoto = ImageTk.PhotoImage(door)
     self.__doorMeme = Button(self.__doorWindow, image=doorPhoto,
@@ -339,7 +339,7 @@ class randomMeme:
     pic = a[x]
     randomPic = Image.open(pic)
     if randomPic.size > (1024, 768):
-      randomPic = randomPic.resize((1024, 768))
+      randomPic = randomPic.resize((800,600))
 
     center(self.__randomWindow, randomPic)
     randomPhoto = ImageTk.PhotoImage(randomPic)
