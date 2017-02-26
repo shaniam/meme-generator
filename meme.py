@@ -51,23 +51,32 @@ class MemeGenerator:
 
     self.__buttonFive = Button(self.__win, image = bingDoorPhoto, command = self.openDoor)
     self.__buttonFive.image = bingDoorPhoto
-    self.__buttonFive.grid(row=1, column=5)
+    self.__buttonFive.grid(row=2, column=2)
+
+    roll = Image.open("roll.jpg")
+    roll = roll.resize((300,300))
+    rollPhoto = ImageTk.PhotoImage(roll)
+
+    self.__buttonSix = Button(self.__win, image=rollPhoto,
+                               command=self.openRoll)
+    self.__buttonSix.image = rollPhoto
+    self.__buttonSix.grid(row=2, column=4)
 
     random = Image.open("random.jpeg")
     randomResize = random.resize((300, 300))
     randomPhoto = ImageTk.PhotoImage(randomResize)
 
-    self.__buttonSix = Button(self.__win, image = randomPhoto, command = self.openRandom)
-    self.__buttonSix.image = randomPhoto
-    self.__buttonSix.grid(row=1, column=6)
+    self.__buttonSeven = Button(self.__win, image = randomPhoto, command = self.openRandom)
+    self.__buttonSeven.image = randomPhoto
+    self.__buttonSeven.grid(row=2, column=3)
 
     self.__mainScreenWidth = self.__win.winfo_screenwidth()
     self.__mainScreenHeight = self.__win.winfo_screenheight()
     self.__mainXCoord = (self.__mainScreenWidth / 2) - (
-      1735 / 2)
+      1240 / 2)
     self.__mainYCoord = (self.__mainScreenHeight / 2) - (
-      308 / 2)
-    self.__win.geometry("%dx%d+%d+%d" % (1735, 308, self.__mainXCoord, self.__mainYCoord))
+      612 / 2)
+    self.__win.geometry("%dx%d+%d+%d" % (1240, 612, self.__mainXCoord, self.__mainYCoord))
 
   def openExpanding(self):
     root.withdraw()
@@ -84,6 +93,10 @@ class MemeGenerator:
   def openArthur(self):
     root.withdraw()
     arthurMeme()
+
+  def openRoll(self):
+    root.withdraw()
+    rollMeme()
 
   def openSalt(self):
     root.withdraw()
@@ -109,7 +122,7 @@ class expandingMeme:
     expanding = Image.open(pic)
     x, y = expanding.size
     if y > 750:
-      expanding = expanding.resize((700,884))
+      expanding = expanding.resize((600,784))
     center(self.__expandingWindow, expanding)
 
     expandingPhoto = ImageTk.PhotoImage(expanding)
@@ -129,7 +142,7 @@ class saltMeme:
 
     self.__saltWindow = Toplevel()
     self.__saltWindow.title("Salt Bae")
-    myfile = open("meme1.txt", "r")
+    myfile = open("salt.txt", "r")
     a = []
     for line in myfile:
       a.append(myfile.readline(10))
@@ -140,8 +153,6 @@ class saltMeme:
     if salt.size > (1024, 768):
       salt = salt.resize((1024, 768))
     center(self.__saltWindow, salt)
-    saltResize = salt.resize((1000, 1000))
-
     saltPhoto = ImageTk.PhotoImage(salt)
     self.__saltMeme = Button(self.__saltWindow, image=saltPhoto,
                               command=self.exit)
@@ -151,7 +162,7 @@ class saltMeme:
     self.__saltWindow.protocol('WM_DELETE_WINDOW', self.exit)
 
   def exit(self):
-    self.__sonWindow.destroy()
+    self.__saltWindow.destroy()
     root.deiconify()
 
 class arthurMeme:
@@ -159,7 +170,7 @@ class arthurMeme:
   def __init__(self):
 
     self.__arthurWindow = Toplevel()
-    self.__arthurWindow.title("Don't ever talk to me or my son again!")
+    self.__arthurWindow.title("Arthur Fist")
     myfile = open("arthurmemes.txt", "r")
     a = []
     for line in myfile:
@@ -219,7 +230,7 @@ class rollMeme:
 
     self.__rollWindow = Toplevel()
     self.__rollWindow.title("Roll Safe")
-    myfile = open("meme1.txt", "r")
+    myfile = open("roll.txt", "r")
     a = []
     for line in myfile:
       a.append(myfile.readline(10))
@@ -229,7 +240,7 @@ class rollMeme:
     roll = Image.open(pic)
     if roll.size > (1024, 768):
       roll = roll.resize((1024, 768))
-
+    center(self.__rollWindow, roll)
     rollPhoto = ImageTk.PhotoImage(roll)
     self.__rollMeme = Button(self.__rollWindow, image=rollPhoto,
                             command=self.exit)
@@ -258,7 +269,7 @@ class doorMeme:
     door = Image.open(pic)
     if door.size > (1024, 768):
       door = door.resize((1024, 768))
-
+    center(self.__doorWindow, door)
     doorPhoto = ImageTk.PhotoImage(door)
     self.__doorMeme = Button(self.__doorWindow, image=doorPhoto,
                             command=self.exit)
