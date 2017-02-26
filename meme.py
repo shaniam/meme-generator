@@ -2,6 +2,7 @@ from tkinter import *
 from PIL import ImageTk
 from PIL import Image
 import random
+import images_scraper
 
 class MemeGenerator:
   WINDOW_WIDTH = 490
