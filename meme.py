@@ -46,6 +46,14 @@ class MemeGenerator:
     self.__buttonFour.image = saltPhoto
     self.__buttonFour.grid(row=1, column=4)
 
+    son= Image.open("son.png")
+    son = son.resize((300,300))
+    sonPhoto = ImageTk.PhotoImage(son)
+
+    self.__buttonFourFive = Button(self.__win, image = sonPhoto, command = self.openSon)
+    self.__buttonFourFive.image = sonPhoto
+    self.__buttonFourFive.grid(row=2, column=1)
+
     bingDoor = Image.open("bingdoor.jpg")
     bingDoorPhoto = ImageTk.PhotoImage(bingDoor)
 
@@ -105,6 +113,40 @@ class MemeGenerator:
   def openRandom(self):
     root.withdraw()
     randomMeme()
+
+  def openSon(self):
+    root.withdraw()
+    sonMeme()
+
+class sonMeme:
+
+  def __init__(self):
+
+    self.__sonWindow = Toplevel()
+    self.__sonWindow.title("Arthur Fist")
+    myfile = open("son.txt", "r")
+    a = []
+    for line in myfile:
+      a.append(myfile.readline(10))
+    a.pop()
+    x = random.randrange(len(a))
+    pic = a[x]
+    son = Image.open(pic)
+    if son.size > (1024, 768):
+      son = son.resize((1024, 768))
+    center(self.__sonWindow, son)
+    sonPhoto = ImageTk.PhotoImage(son)
+    self.__sonMeme = Button(self.__sonWindow, image=sonPhoto,
+                            command=self.exit)
+    self.__sonMeme.image = sonPhoto
+    self.__sonMeme.grid()
+
+    self.__sonWindow.protocol('WM_DELETE_WINDOW', self.exit)
+
+  def exit(self):
+    self.__sonWindow.destroy()
+    root.deiconify()
+
 
 class expandingMeme:
 
