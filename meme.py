@@ -2,12 +2,13 @@ from tkinter import *
 from PIL import ImageTk
 from PIL import Image
 import random
-import images_scraper
+from bs4 import BeautifulSoup
+import urllib.request
+import re
 
 class MemeGenerator:
   WINDOW_WIDTH = 490
   WINDOW_HEIGHT = 430
-
 
   def __init__(self, master):
 
@@ -140,7 +141,8 @@ class sonMeme:
     self.__sonMeme = Button(self.__sonWindow, image=sonPhoto,
                             command=self.exit)
     self.__sonMeme.image = sonPhoto
-    self.__sonMeme.grid()
+    self.__sonMeme.grid(row=1, column=2)
+
 
     self.__sonWindow.protocol('WM_DELETE_WINDOW', self.exit)
 
@@ -152,6 +154,11 @@ class sonMeme:
 class expandingMeme:
 
   def __init__(self):
+
+    memeList = getLinks("http://knowyourmeme.com/memes/expanding-brain/photos")
+
+    print(memeList)
+
 
     self.__expandingWindow = Toplevel()
     self.__expandingWindow.title("Expanding Brain")
@@ -167,7 +174,6 @@ class expandingMeme:
     if y > 750:
       expanding = expanding.resize((600,784))
     center(self.__expandingWindow, expanding)
-
     expandingPhoto = ImageTk.PhotoImage(expanding)
     self.__expandingMeme = Button(self.__expandingWindow, image = expandingPhoto, command = self.exit)
     self.__expandingMeme.image = expandingPhoto
@@ -363,6 +369,17 @@ def center(window, im):
   mainXCoord = (mainScreenWidth / 2) - (x / 2)
   mainYCoord = (mainScreenHeight / 2) - (y / 2)
   window.geometry("%dx%d+%d+%d" % (x, y, mainXCoord, mainYCoord))
+
+def getLinks(url):
+
+  html_page = urllib.request.urlopen(url)
+  soup = BeautifulSoup(html_page, "lxml")
+  memeLinks = []
+
+  for link in soup.findAll('a', attrs={'href': re.compile("^http://")}):
+    memeLinks.append(link.get('href'))
+
+  return memeLinks
 
 root = Tk()
 MemeGenerator(root)
