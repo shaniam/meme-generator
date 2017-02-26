@@ -4,7 +4,9 @@ from PIL import Image
 import random
 from bs4 import BeautifulSoup
 import urllib.request
-import re
+import requests
+from io import BytesIO
+
 
 class MemeGenerator:
   WINDOW_WIDTH = 490
@@ -125,15 +127,11 @@ class sonMeme:
   def __init__(self):
 
     self.__sonWindow = Toplevel()
-    self.__sonWindow.title("Arthur Fist")
-    myfile = open("son.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    son = Image.open(pic)
+    self.__sonWindow.title("Son")
+    memeList = getLinks("http://knowyourmeme.com/memes/don-t-talk-to-me-or-my-son-ever-again/photos")
+    link = randomLink(memeList)
+    response = requests.get(link)
+    son = Image.open(BytesIO(response.content))
     if son.size > (1024, 768):
       son = son.resize((800, 600))
     center(self.__sonWindow, son)
@@ -157,22 +155,14 @@ class expandingMeme:
 
     memeList = getLinks("http://knowyourmeme.com/memes/expanding-brain/photos")
 
-    print(memeList)
-
-
     self.__expandingWindow = Toplevel()
     self.__expandingWindow.title("Expanding Brain")
-    myfile = open("expandingbrain.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    expanding = Image.open(pic)
+    link = randomLink(memeList)
+    response = requests.get(link)
+    expanding = Image.open(BytesIO(response.content))
     x, y = expanding.size
     if y > 750:
-      expanding = expanding.resize((600,784))
+      expanding = expanding.resize((600, 784))
     center(self.__expandingWindow, expanding)
     expandingPhoto = ImageTk.PhotoImage(expanding)
     self.__expandingMeme = Button(self.__expandingWindow, image = expandingPhoto, command = self.exit)
@@ -189,16 +179,13 @@ class saltMeme:
 
   def __init__(self):
 
+    memeList = getLinks("http://knowyourmeme.com/memes/salt-bae/photos")
+
     self.__saltWindow = Toplevel()
     self.__saltWindow.title("Salt Bae")
-    myfile = open("salt.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    salt = Image.open(pic)
+    link = randomLink(memeList)
+    response = requests.get(link)
+    salt = Image.open(BytesIO(response.content))
     if salt.size > (1024, 768):
       salt = salt.resize((800, 600))
     center(self.__saltWindow, salt)
@@ -218,16 +205,13 @@ class arthurMeme:
 
   def __init__(self):
 
+    memeList = getLinks("http://knowyourmeme.com/memes/arthur-s-fist/photos")
+
     self.__arthurWindow = Toplevel()
     self.__arthurWindow.title("Arthur Fist")
-    myfile = open("arthurmemes.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    arthur = Image.open(pic)
+    link = randomLink(memeList)
+    response = requests.get(link)
+    arthur = Image.open(BytesIO(response.content))
     if arthur.size > (1024, 768):
       arthur = arthur.resize((800, 600))
     center(self.__arthurWindow, arthur)
@@ -277,16 +261,12 @@ class rollMeme:
 
   def __init__(self):
 
+    memeList = getLinks('http://knowyourmeme.com/memes/roll-safe/photos')
     self.__rollWindow = Toplevel()
     self.__rollWindow.title("Roll Safe")
-    myfile = open("roll.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    roll = Image.open(pic)
+    link = randomLink(memeList)
+    response = requests.get(link)
+    roll = Image.open(BytesIO(response.content))
     if roll.size > (1024, 768):
       roll = roll.resize((800, 600))
     center(self.__rollWindow, roll)
@@ -335,16 +315,13 @@ class randomMeme:
 
   def __init__(self):
 
+    memeList = getLinks("http://knowyourmeme.com/photos/random")
+
     self.__randomWindow = Toplevel()
     self.__randomWindow.title("Random")
-    myfile = open("random.txt", "r")
-    a = []
-    for line in myfile:
-      a.append(myfile.readline(10))
-    a.pop()
-    x = random.randrange(len(a))
-    pic = a[x]
-    randomPic = Image.open(pic)
+    link = randomLink(memeList)
+    response = requests.get(link)
+    randomPic = Image.open(BytesIO(response.content))
     if randomPic.size > (1024, 768):
       randomPic = randomPic.resize((800,600))
 
@@ -376,10 +353,46 @@ def getLinks(url):
   soup = BeautifulSoup(html_page, "lxml")
   memeLinks = []
 
+  for link in soup.findAll('img', attrs={'src': re.compile("^http://")}):
+    memeLinks.append(link.parent.get('href'))
+
+  memeFinal = []
+  for x in memeLinks:
+    if x is not None:
+      if "photo" in x:
+        memeFinal.append(x)
+
+  return memeFinal
+
+def randomLink(list):
+  randomNumber = random.randrange(0, len(list))
+
+  link = "http://knowyourmeme.com" + list[randomNumber]
+
+  html_page = urllib.request.urlopen(link)
+  soup = BeautifulSoup(html_page, "lxml")
+  memeLinks = []
+
   for link in soup.findAll('a', attrs={'href': re.compile("^http://")}):
     memeLinks.append(link.get('href'))
 
-  return memeLinks
+  memeFinal = []
+
+  for link in memeLinks:
+    if 'photos' in link and 'original' in link:
+      memeFinal.append(link)
+
+  memeString = ""
+
+  while(memeString == ""):
+    try:
+      memeString = memeFinal[0]
+    except IndexError:
+      for link in memeLinks:
+        if 'photos' in link and 'original' in link:
+          memeFinal.append(link)
+
+  return memeString
 
 root = Tk()
 MemeGenerator(root)
