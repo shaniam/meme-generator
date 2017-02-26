@@ -3,8 +3,6 @@ from PIL import ImageTk
 from PIL import Image
 import random
 
-filenames = []
-
 class MemeGenerator:
   WINDOW_WIDTH = 490
   WINDOW_HEIGHT = 430
